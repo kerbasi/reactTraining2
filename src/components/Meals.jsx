@@ -1,5 +1,9 @@
-﻿const Meals = () => {
-  return <div>Hey man!</div>;
+﻿import { useGlobalContext } from "../context";
+
+const Meals = () => {
+  const man = useGlobalContext();
+
+  return <div>Hey {man.name}!</div>;
 };
 
 export default Meals;
