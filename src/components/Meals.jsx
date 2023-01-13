@@ -14,7 +14,7 @@ const Meals = () => {
   if (meals.length === 0) {
     return (
       <section className='section'>
-        <h4>No items</h4>
+        <h4>No meals matched your search term. Please try again.</h4>
       </section>
     );
   }

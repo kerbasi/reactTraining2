@@ -8,6 +8,7 @@ const AppContext = createContext();
 const AppProvider = ({ children }) => {
   const [meals, setMeals] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const fetchMeals = async (url) => {
     setLoading(true);
@@ -15,6 +16,8 @@ const AppProvider = ({ children }) => {
       const { data } = await axios(url);
       if (data.meals) {
         setMeals(data.meals);
+      } else {
+        setMeals([]);
       }
     } catch (e) {
       console.log(e);
@@ -22,12 +25,18 @@ const AppProvider = ({ children }) => {
     setLoading(false);
   };
 
+  const fetchRandomMeal = () => {
+    fetchMeals(randomMealUrl);
+  };
+
   useEffect(() => {
-    fetchMeals(allMealsUrl);
-  }, []);
+    fetchMeals(allMealsUrl + searchTerm);
+  }, [searchTerm]);
 
   return (
-    <AppContext.Provider value={{ meals, loading }}>
+    <AppContext.Provider
+      value={{ meals, loading, setSearchTerm, fetchRandomMeal }}
+    >
       {children}
     </AppContext.Provider>
   );
