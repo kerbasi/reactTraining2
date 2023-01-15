@@ -10,11 +10,16 @@ const Search = () => {
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (text) {
-      setSearchTerm(text);
-      // setText("");
-    }
+    // if (text) {
+    setSearchTerm(text);
+    // setText("");
+    // }
   }
+
+  const handleRandomMeal = () => {
+    setSearchTerm(false);
+    fetchRandomMeal();
+  };
 
   const { setSearchTerm, fetchRandomMeal } = useGlobalContext();
 
@@ -34,7 +39,7 @@ const Search = () => {
         <button
           className='btn btn-hipster'
           type='button'
-          onClick={fetchRandomMeal}
+          onClick={handleRandomMeal}
         >
           surprise me !
         </button>
