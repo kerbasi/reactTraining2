@@ -9,13 +9,16 @@ const AppProvider = ({ children }) => {
   const [meals, setMeals] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [showModal, setShowModal] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedMeal, setSelectedMeal] = useState(null);
+  const [favorites, setFavorites] = useState([]);
 
   const fetchMeals = async (url) => {
     setLoading(true);
     try {
       const { data } = await axios(url);
       if (data.meals) {
+        console.log(data.meals);
         setMeals(data.meals);
       } else {
         setMeals([]);
@@ -30,12 +33,33 @@ const AppProvider = ({ children }) => {
     fetchMeals(randomMealUrl);
   };
 
+  const selectMeal = (idMeal) => {
+    let meal;
+    meal = meals.find((meal) => meal.idMeal === idMeal);
+    setSelectedMeal(meal);
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
+  const addToFavorites = (idMeal) => {
+    const meal = meals.find((meal) => meal.idMeal === idMeal);
+    if (favorites.includes(meal)) return;
+    setFavorites((prevFavorites) => [...prevFavorites, meal]);
+  };
+
+  const removeFromFavorites = (idMeal) => {
+    setFavorites(favorites.filter((meal) => meal.idMeal !== idMeal));
+  };
+
   useEffect(() => {
     fetchMeals(allMealsUrl);
   }, []);
 
   useEffect(() => {
-    if (searchTerm === false) return;
+    if (!searchTerm) return;
     fetchMeals(allMealsUrl + searchTerm);
   }, [searchTerm]);
 
@@ -48,6 +72,12 @@ const AppProvider = ({ children }) => {
         fetchRandomMeal,
         showModal,
         setShowModal,
+        selectedMeal,
+        selectMeal,
+        closeModal,
+        addToFavorites,
+        removeFromFavorites,
+        favorites,
       }}
     >
       {children}

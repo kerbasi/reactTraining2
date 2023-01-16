@@ -17,7 +17,7 @@ const Search = () => {
   }
 
   const handleRandomMeal = () => {
-    setSearchTerm(false);
+    setSearchTerm("");
     fetchRandomMeal();
   };
 
