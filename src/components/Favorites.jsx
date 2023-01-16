@@ -16,7 +16,7 @@ const Favorites = () => {
                 <img
                   src={image}
                   className='favorite-img img'
-                  onClick={() => selectMeal(idMeal)}
+                  onClick={() => selectMeal(idMeal, true)}
                 />
                 <button
                   className='remove-btn'

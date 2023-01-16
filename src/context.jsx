@@ -11,7 +11,9 @@ const AppProvider = ({ children }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [selectedMeal, setSelectedMeal] = useState(null);
-  const [favorites, setFavorites] = useState([]);
+  const [favorites, setFavorites] = useState(
+    JSON.parse(localStorage.getItem("favorites")) || []
+  );
 
   const fetchMeals = async (url) => {
     setLoading(true);
@@ -33,9 +35,13 @@ const AppProvider = ({ children }) => {
     fetchMeals(randomMealUrl);
   };
 
-  const selectMeal = (idMeal) => {
+  const selectMeal = (idMeal, favoriteMeal) => {
     let meal;
-    meal = meals.find((meal) => meal.idMeal === idMeal);
+    if (favoriteMeal) {
+      meal = favorites.find((meal) => meal.idMeal === idMeal);
+    } else {
+      meal = meals.find((meal) => meal.idMeal === idMeal);
+    }
     setSelectedMeal(meal);
     setShowModal(true);
   };
@@ -47,11 +53,21 @@ const AppProvider = ({ children }) => {
   const addToFavorites = (idMeal) => {
     const meal = meals.find((meal) => meal.idMeal === idMeal);
     if (favorites.includes(meal)) return;
-    setFavorites((prevFavorites) => [...prevFavorites, meal]);
+    setFavorites((prevFavorites) => {
+      const newFavorites = [...prevFavorites, meal];
+      localStorage.setItem("favorites", JSON.stringify(newFavorites));
+      return newFavorites;
+    });
   };
 
   const removeFromFavorites = (idMeal) => {
-    setFavorites(favorites.filter((meal) => meal.idMeal !== idMeal));
+    setFavorites((prevFavorites) => {
+      const newFavorites = prevFavorites.filter(
+        (meal) => meal.idMeal !== idMeal
+      );
+      localStorage.setItem("favorites", JSON.stringify(newFavorites));
+      return newFavorites;
+    });
   };
 
   useEffect(() => {

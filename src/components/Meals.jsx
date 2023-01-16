@@ -29,7 +29,7 @@ const Meals = () => {
             <img
               src={image}
               className='img'
-              onClick={() => selectMeal(idMeal)}
+              onClick={() => selectMeal(idMeal, false)}
             />
             <footer>
               <h5>{title}</h5>

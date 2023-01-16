@@ -10,10 +10,10 @@ const Search = () => {
 
   function handleSubmit(e) {
     e.preventDefault();
-    // if (text) {
-    setSearchTerm(text);
-    // setText("");
-    // }
+    if (text) {
+      setSearchTerm(text);
+      // setText("");
+    }
   }
 
   const handleRandomMeal = () => {
